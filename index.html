@@ -508,7 +508,7 @@
         </div>
       </section>
 
-      <footer class="footer"><span>KI-Lernwerkstatt · lokal & offline-first</span><span id="storage-indicator">Lokaler Speicher bereit</span></footer>
+      <footer class="footer"><span>KI-Lernwerkstatt · lokal & offline-first</span><span id="storage-indicator">Lokaler Speicher bereit</span> · <span id="offline-indicator" role="status">Offline-Cache wird geprüft</span></footer>
     </main>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -822,7 +822,14 @@
         setupNotes();
         renderCard();
         renderStats();
-        if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => { $("#storage-indicator").textContent = "Offline-Cache wird vorbereitet"; });
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("./sw.js")
+            .then(() => navigator.serviceWorker.ready)
+            .then(() => { $("#offline-indicator").textContent = "Offline-Cache bereit"; })
+            .catch(() => { $("#offline-indicator").textContent = "Offline-Cache nicht verfügbar"; });
+        } else {
+          $("#offline-indicator").textContent = "Offline-Funktion benötigt HTTPS oder localhost";
+        }
       })();
     </script>
   </body>
