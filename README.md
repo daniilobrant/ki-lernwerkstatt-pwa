@@ -1,35 +1,63 @@
 # KI-Lernwerkstatt
 
-Eine kleine Lernwerkstatt für alle, die sich mit KI und betriebswirtschaftlichen Fragen beschäftigen möchten. Die Progressive Web App läuft direkt im Browser und kann auf dem Smartphone oder Computer installiert werden.
+[🇩🇪 Deutsch](#-deutsch) | [🇬🇧 English](#-english)
 
-**[KI-Lernwerkstatt öffnen](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/)**
+**[Live-Demo / Live demo](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/)**
 
-## Was bietet die App?
+## 🇩🇪 Deutsch
 
-- **Karteikarten:** Zehn vorbefüllte Karten erklären unter anderem LLMs, RAG, Prompt Injection und den EU AI Act. Eigene Fragen und Antworten lassen sich ergänzen.
-- **ROI- und Token-Rechner:** Mit eigenen Annahmen zu Nutzung, Modellpreisen und Einführungskosten lassen sich Frontier- und Mini- beziehungsweise lokale Modelle vergleichen. Die angezeigten Preise und der Wechselkurs sind Planungsannahmen.
-- **Lernstand und Notizen:** Fortschritt, eigene Karten und Notizen werden lokal gespeichert. Eine JSON-Datei ermöglicht Sicherung und Übertragung auf ein anderes Gerät.
+Eine installierbare Lernwerkstatt für KI-Grundlagen und betriebswirtschaftliche Entscheidungen.
 
-Nach dem ersten Laden stehen die zwischengespeicherten App-Dateien auch offline zur Verfügung. Es gibt keine externen Bibliotheken oder Tracker.
+### Funktionen
 
-## Lokal testen
+- Zehn Karteikarten und eigene Fragen; Lernfortschritt markieren.
+- ROI- und Tokenkosten mit anpassbaren Annahmen vergleichen.
+- Notizen und Fortschritt lokal speichern und per JSON exportieren oder importieren.
 
-```bash
-python3 -m http.server 4173
-```
+### Technik und Datenschutz
 
-Danach `http://127.0.0.1:4173/` öffnen. Für Service Worker und Installation muss die App über `localhost` oder HTTPS ausgeliefert werden; ein direktes Öffnen der `index.html` reicht dafür nicht.
+Die App besteht aus HTML, CSS und JavaScript. Manifest, Icons und Service Worker ermöglichen nach erfolgreichem Laden die Offline-Nutzung. Berechnungen sind deterministisch; es findet kein KI-Modellaufruf statt und die App enthält keine API-Schlüssel oder Tracker. Daten liegen im Browser des jeweiligen Geräts; für den Gerätewechsel die JSON-Sicherung verwenden. Rechnerwerte sind Annahmen und keine verbindlichen Anbieterpreise.
 
-## GitHub Pages
+### Start und Installation
 
-Die App wird aus dem Branch `main` über GitHub Pages veröffentlicht: [Zur Live-App](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/). Die relativen Pfade ermöglichen den Betrieb im Repository-Unterordner.
+Die [Live-App](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/) einmal online öffnen. Lokal im Projektordner python3 -m http.server 4173 starten und http://127.0.0.1:4173/ öffnen. Service Worker und Installation benötigen HTTPS oder localhost.
 
-## Daten
+- iPhone/iPad: Safari → Teilen → „Zum Home-Bildschirm“.
+- Android: unterstützten Browser öffnen → „App installieren“ oder „Zum Startbildschirm“.
+- macOS: Safari „Zum Dock hinzufügen“ oder Installationsfunktion eines unterstützten Chromium-Browsers.
+- Windows: Installationssymbol oder Browsermenü in Edge oder Chrome.
 
-Lernstand, eigene Karten, Rechnerwerte und Notizen werden ausschließlich in `localStorage` gespeichert. Über den Bereich „Lernstand & Notizen“ kann eine JSON-Sicherung exportiert oder importiert werden.
+Die verfügbaren Menüs hängen von Gerät und Browser ab. Für Offline-Nutzung zuerst vollständig laden.
 
-## Smartphone-Installation
+### Lizenz und Quellen
 
-- iPhone/iPad: Seite in Safari öffnen → Teilen → „Zum Home-Bildschirm“ → Hinzufügen.
-- Android: Seite in Chrome öffnen → Drei-Punkte-Menü → „Zum Startbildschirm hinzufügen“ bzw. „App installieren“.
-- macOS/Windows: Seite in einem Chromium-basierten Browser öffnen → Installationssymbol in der Adressleiste oder Browsermenü → Installieren.
+Für dieses Repository ist keine separate Lizenz angegeben. Übungsprojekt im Rahmen der Vorlesung „Data Science & KI“ bei Prof. Dr. Mathias Engel; [Kursmaterial](https://github.com/ProfEngel/KI-Literacy).
+
+## 🇬🇧 English
+
+An installable learning workshop for AI concepts and business decisions.
+
+### Features
+
+- Ten flashcards plus custom questions and learning progress.
+- Compare ROI and token costs using adjustable assumptions.
+- Store notes and progress locally and transfer them with JSON export and import.
+
+### Architecture and privacy
+
+The app uses HTML, CSS and JavaScript. A manifest, icons and service worker support offline use after the app has loaded successfully. Calculations are deterministic; no language model is called and the app embeds no API keys or trackers. Data stays in the browser on each device; use JSON export and import to move it. Calculator values are assumptions, not binding provider prices.
+
+### Start and installation
+
+Open the [live app](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/) online once. For local use, run python3 -m http.server 4173 in the project folder and open http://127.0.0.1:4173/. Service workers and installation require HTTPS or localhost.
+
+- iPhone/iPad: Safari → Share → Add to Home Screen.
+- Android: use a supported browser and choose Install app or Add to Home screen.
+- macOS: Safari Add to Dock or the install option in a supported Chromium browser.
+- Windows: use the install icon or menu in Edge or Chrome.
+
+Availability depends on the device and browser. Load the app fully before going offline.
+
+### License and sources
+
+No separate license has been specified for this repository. Coursework for “Data Science & AI” with Prof. Dr. Mathias Engel; [course materials](https://github.com/ProfEngel/KI-Literacy).
