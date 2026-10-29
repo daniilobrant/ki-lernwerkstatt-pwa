@@ -2,7 +2,7 @@
 
 Eine kleine Lernwerkstatt für alle, die sich mit KI und betriebswirtschaftlichen Fragen beschäftigen möchten. Die Progressive Web App läuft direkt im Browser und kann auf dem Smartphone oder Computer installiert werden.
 
-**[KI-Lernwerkstatt öffnen](https://daniilobrant-oss.github.io/ki-lernwerkstatt-pwa/)**
+**[KI-Lernwerkstatt öffnen](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/)**
 
 ## Was bietet die App?
 
@@ -22,7 +22,7 @@ Danach `http://127.0.0.1:4173/` öffnen. Für Service Worker und Installation mu
 
 ## GitHub Pages
 
-Die App wird aus dem Branch `main` über GitHub Pages veröffentlicht: [Zur Live-App](https://daniilobrant-oss.github.io/ki-lernwerkstatt-pwa/). Die relativen Pfade ermöglichen den Betrieb im Repository-Unterordner.
+Die App wird aus dem Branch `main` über GitHub Pages veröffentlicht: [Zur Live-App](https://daniilobrant.github.io/ki-lernwerkstatt-pwa/). Die relativen Pfade ermöglichen den Betrieb im Repository-Unterordner.
 
 ## Daten
 
