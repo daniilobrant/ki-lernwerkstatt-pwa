@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#24666A" />
+    <meta name="description" content="Offline-Lernwerkstatt für BWL, KI und Token-Ökonomie." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="KI-Lernwerkstatt" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <title>KI-Lernwerkstatt · BWL & KI offline</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --cream: #f7f7f5;
+        --ink: #182c33;
+        --petrol: #24666a;
+        --petrol-dark: #17494d;
+        --sage: #dcefe1;
+        --gold: #f4eac8;
+        --white: #ffffff;
+        --muted: #617278;
+        --line: rgba(24, 44, 51, 0.13);
+        --shadow: 0 18px 55px rgba(24, 44, 51, 0.12);
+        --shadow-soft: 0 8px 25px rgba(24, 44, 51, 0.08);
+        --radius-lg: 30px;
+        --radius-md: 18px;
+        --radius-sm: 12px;
+        --focus: #e0a900;
+      }
+
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --cream: #14272c;
+        --ink: #f4f7f2;
+        --petrol: #6db6b7;
+        --petrol-dark: #9bd0c6;
+        --sage: #25443c;
+        --gold: #514b2d;
+        --white: #20363b;
+        --muted: #b6c4c3;
+        --line: rgba(236, 246, 240, 0.14);
+        --shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+        --shadow-soft: 0 8px 25px rgba(0, 0, 0, 0.2);
+        --focus: #f1ca58;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+        transition: background 180ms ease, color 180ms ease;
+      }
+
+      button, input, textarea, select { font: inherit; }
+
+      button, input[type="range"] { touch-action: manipulation; }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+      }
+
+      a { color: var(--petrol); }
+
+      .app-shell {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+        padding: 24px clamp(18px, 4vw, 48px) 54px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 46px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: var(--petrol);
+        color: #fff;
+        box-shadow: var(--shadow-soft);
+        font-size: 1.15rem;
+      }
+
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .top-actions { display: flex; align-items: center; gap: 10px; }
+
+      .icon-button, .ghost-button, .primary-button, .danger-button {
+        min-height: 46px;
+        border-radius: 999px;
+        padding: 0 18px;
+        font-weight: 750;
+        transition: transform 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .icon-button:hover, .ghost-button:hover, .primary-button:hover, .danger-button:hover { transform: translateY(-2px); }
+
+      .icon-button, .ghost-button {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+      }
+
+      .icon-button { width: 46px; padding: 0; font-size: 1.1rem; }
+
+      .primary-button { background: var(--petrol); color: #fff; box-shadow: 0 7px 18px rgba(36, 102, 106, 0.2); }
+      .primary-button:hover { background: var(--petrol-dark); }
+      .danger-button { background: #b94d45; color: #fff; }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(250px, 0.55fr);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 34px;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--petrol);
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+      h1 { max-width: 780px; margin-bottom: 15px; font-size: clamp(2.4rem, 6vw, 5.3rem); line-height: 0.98; letter-spacing: -0.07em; }
+      h2 { margin-bottom: 8px; font-size: clamp(1.65rem, 3vw, 2.35rem); line-height: 1.08; letter-spacing: -0.045em; }
+      h3 { margin-bottom: 8px; font-size: 1.1rem; letter-spacing: -0.02em; }
+      .hero-copy { max-width: 680px; color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.18rem); }
+
+      .hero-note {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--gold);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .hero-note strong { display: block; margin-bottom: 8px; font-size: 1.35rem; }
+      .hero-note p { margin: 0; color: var(--ink); font-size: 0.92rem; }
+
+      .nav-tabs {
+        position: sticky;
+        top: 12px;
+        z-index: 5;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        margin: 0 -4px 28px;
+        padding: 5px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--cream) 88%, transparent);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav-tab {
+        flex: 1 0 auto;
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 800;
+      }
+
+      .nav-tab[aria-selected="true"] { background: var(--petrol); color: #fff; }
+
+      .section { display: none; scroll-margin-top: 90px; }
+      .section.is-active { display: block; animation: section-in 220ms ease both; }
+      @keyframes section-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+      .section-intro { display: flex; justify-content: space-between; gap: 28px; align-items: end; margin-bottom: 22px; }
+      .section-intro p { max-width: 660px; margin-bottom: 0; color: var(--muted); }
+
+      .grid-2 { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr); gap: 20px; }
+
+      .card, .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--white);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .panel { padding: clamp(20px, 3vw, 30px); }
+
+      .trainer-card {
+        min-height: 430px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(24px, 5vw, 54px);
+        overflow: hidden;
+        background: var(--petrol);
+        color: #fff;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+      }
+
+      .trainer-card:active { transform: scale(0.995); }
+      .trainer-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+      .card-kicker { font-size: 0.78rem; font-weight: 850; letter-spacing: 0.13em; text-transform: uppercase; opacity: 0.78; }
+      .card-number { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; font-weight: 800; }
+      .trainer-card h3 { max-width: 680px; margin: 25px 0 18px; font-size: clamp(2rem, 5vw, 4.2rem); line-height: 0.98; letter-spacing: -0.06em; }
+      .trainer-card p { max-width: 700px; margin-bottom: 0; color: rgba(255,255,255,.84); font-size: clamp(1.05rem, 2vw, 1.3rem); }
+      .trainer-card.is-flipped { background: var(--petrol-dark); }
+      .card-hint { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.72); font-size: 0.88rem; }
+
+      .progress-line { height: 8px; margin: 20px 0 24px; overflow: hidden; border-radius: 999px; background: var(--sage); }
+      .progress-line > span { display: block; height: 100%; border-radius: inherit; background: var(--petrol); transition: width 220ms ease; }
+
+      .trainer-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+      .control-group { display: flex; gap: 8px; }
+      .circle-button { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--sage); color: var(--ink); font-size: 1.2rem; font-weight: 900; }
+      .circle-button:disabled { cursor: not-allowed; opacity: 0.45; }
+      .card-status { color: var(--muted); font-size: 0.92rem; font-weight: 700; }
+
+      .stats-stack { display: grid; gap: 14px; }
+      .stat-tile { padding: 22px; border-radius: var(--radius-md); background: var(--sage); }
+      .stat-tile:nth-child(2) { background: var(--gold); }
+      .stat-tile:nth-child(3) { background: color-mix(in srgb, var(--petrol) 16%, var(--white)); }
+      .stat-value { display: block; margin-bottom: 3px; font-size: 2.1rem; line-height: 1; font-weight: 900; letter-spacing: -0.06em; }
+      .stat-label { color: var(--ink); font-size: 0.88rem; font-weight: 750; }
+
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .field { display: grid; gap: 7px; }
+      .field.full { grid-column: 1 / -1; }
+      label { color: var(--ink); font-size: 0.83rem; font-weight: 800; }
+      input[type="text"], input[type="number"], textarea, select {
+        width: 100%;
+        min-height: 47px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 10px 13px;
+        background: var(--cream);
+        color: var(--ink);
+      }
+      textarea { min-height: 138px; resize: vertical; }
+      input[type="range"] { width: 100%; accent-color: var(--petrol); }
+      .range-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+      .range-value { color: var(--petrol); font-weight: 900; }
+      .microcopy { margin: 0; color: var(--muted); font-size: 0.8rem; }
+      .form-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+      .calculator-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr); gap: 20px; }
+      .calculator-panel { display: grid; gap: 25px; }
+      .model-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; border-radius: 999px; background: var(--cream); }
+      .model-toggle button { min-height: 44px; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 800; }
+      .model-toggle button[aria-pressed="true"] { background: var(--petrol); color: #fff; }
+      .result-card { display: grid; align-content: space-between; min-height: 100%; padding: clamp(25px, 4vw, 38px); border-radius: var(--radius-lg); background: var(--ink); color: var(--cream); }
+      .result-card .eyebrow { color: var(--sage); }
+      .big-result { margin: 8px 0 6px; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -0.08em; }
+      .result-note { margin: 0; color: color-mix(in srgb, var(--cream) 75%, transparent); font-size: 0.92rem; }
+      .result-breakdown { display: grid; gap: 12px; margin-top: 30px; }
+      .breakdown-row { display: flex; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid rgba(247,247,245,.16); font-size: 0.92rem; }
+      .breakdown-row strong { color: var(--sage); }
+      .hint-box { margin-top: 18px; padding: 15px; border-radius: var(--radius-sm); background: var(--gold); color: var(--ink); font-size: 0.84rem; }
+
+      .notes-layout { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 20px; }
+      .notes-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .dropzone { display: grid; place-items: center; min-height: 160px; padding: 20px; border: 1.5px dashed var(--petrol); border-radius: var(--radius-md); background: color-mix(in srgb, var(--sage) 55%, var(--white)); text-align: center; }
+      .dropzone p { margin: 0; color: var(--muted); font-size: 0.86rem; }
+      .dropzone strong { display: block; margin-bottom: 6px; color: var(--ink); }
+      .notes-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 0.8rem; }
+      .user-card-list { display: grid; gap: 10px; margin-top: 18px; }
+      .user-card-item { display: flex; align-items: start; justify-content: space-between; gap: 12px; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--cream); }
+      .user-card-item p { margin: 3px 0 0; color: var(--muted); font-size: 0.85rem; }
+      .delete-card { flex: 0 0 auto; min-height: 36px; padding: 0 10px; border-radius: 9px; background: transparent; color: #b94d45; font-weight: 800; }
+
+      .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }
+      .toast { position: fixed; right: 18px; bottom: 18px; z-index: 20; max-width: min(360px, calc(100vw - 36px)); padding: 14px 17px; border-radius: 14px; background: var(--ink); color: var(--cream); box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity 180ms ease, transform 180ms ease; }
+      .toast.is-visible { opacity: 1; transform: translateY(0); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+      @media (max-width: 820px) {
+        .hero, .grid-2, .calculator-layout, .notes-layout { grid-template-columns: 1fr; }
+        .hero { gap: 20px; }
+        .section-intro { display: block; }
+        .section-intro p { margin-top: 10px; }
+        .result-card { min-height: 420px; }
+      }
+
+      @media (max-width: 560px) {
+        .app-shell { padding-top: 14px; }
+        .topbar { margin-bottom: 34px; }
+        .brand-text { display: none; }
+        h1 { font-size: clamp(2.65rem, 15vw, 4.3rem); }
+        .form-grid { grid-template-columns: 1fr; }
+        .field.full { grid-column: auto; }
+        .trainer-card { min-height: 390px; padding: 25px; }
+        .trainer-controls { align-items: stretch; }
+        .trainer-controls .primary-button { width: 100%; order: 3; }
+        .card-status { width: 100%; text-align: center; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="KI-Lernwerkstatt Startseite">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span class="brand-text"><small>Offline PWA</small>KI-Lernwerkstatt</span>
+        </a>
+        <div class="top-actions">
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="Dark-Mode aktivieren" title="Dark-Mode">☾</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Dein persönliches KI-Atelier</p>
+          <h1 id="page-title">Lernen, rechnen, anwenden.</h1>
+          <p class="hero-copy">Eine ruhige, praktische Lernwerkstatt für BWL-Entscheidungen mit KI. Funktioniert im Browser, installiert und offline — deine Daten bleiben auf deinem Gerät.</p>
+        </div>
+        <aside class="hero-note">
+          <strong id="hero-progress">0 % im Lernfluss</strong>
+          <p>Starte mit einer Karte, spiele ein Szenario im Rechner durch und halte deine Erkenntnisse direkt hier fest.</p>
+        </aside>
+      </section>
+
+      <nav class="nav-tabs" aria-label="Hauptbereiche" role="tablist">
+        <button class="nav-tab" id="tab-trainer" type="button" role="tab" aria-selected="true" aria-controls="section-trainer" data-section="trainer">A · Karteikarten</button>
+        <button class="nav-tab" id="tab-calculator" type="button" role="tab" aria-selected="false" aria-controls="section-calculator" data-section="calculator">B · ROI-Rechner</button>
+        <button class="nav-tab" id="tab-notes" type="button" role="tab" aria-selected="false" aria-controls="section-notes" data-section="notes">C · Lernstand & Notizen</button>
+      </nav>
+
+      <section class="section is-active" id="section-trainer" role="tabpanel" aria-labelledby="tab-trainer">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Sektion A</p>
+            <h2>Interaktiver Karteikarten-Trainer</h2>
+          </div>
+          <p>Tippe auf die Karte, um die Rückseite zu sehen. Markiere, ob der Begriff sitzt — so wächst dein Lernstand automatisch mit.</p>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <article class="trainer-card" id="flashcard" tabindex="0" aria-label="Karte umdrehen">
+              <div class="trainer-top">
+                <span class="card-kicker" id="card-side-label">Frage</span>
+                <span class="card-number" id="card-number">01</span>
+              </div>
+              <div>
+                <h3 id="card-title">Lade Karte …</h3>
+                <p id="card-body">Deine Lernkarten werden vorbereitet.</p>
+              </div>
+              <div class="card-hint"><span aria-hidden="true">↻</span> Tippen oder Leertaste zum Umdrehen</div>
+            </article>
+            <div class="progress-line" aria-label="Kartenfortschritt"><span id="trainer-progress" style="width: 0%"></span></div>
+            <div class="trainer-controls">
+              <div class="control-group">
+                <button class="circle-button" id="previous-card" type="button" aria-label="Vorherige Karte">←</button>
+                <button class="circle-button" id="next-card" type="button" aria-label="Nächste Karte">→</button>
+              </div>
+              <span class="card-status" id="card-status">Karte 1 von 10</span>
+              <button class="primary-button" id="know-card" type="button">✓ Sitzt</button>
+            </div>
+          </div>
+
+          <aside class="stats-stack" aria-label="Lernstatistik">
+            <div class="stat-tile"><span class="stat-value" id="known-count">0</span><span class="stat-label">Karten sicher beantwortet</span></div>
+            <div class="stat-tile"><span class="stat-value" id="streak-count">0</span><span class="stat-label">Lernkarten heute angesehen</span></div>
+            <div class="stat-tile"><span class="stat-value" id="custom-card-count">0</span><span class="stat-label">Eigene Karten ergänzt</span></div>
+            <div class="panel">
+              <h3>Dein Lernimpuls</h3>
+              <p class="microcopy">Kleine Wiederholungen schlagen große Vorsätze. Nach jeder Antwort kannst du direkt weitergehen.</p>
+              <button class="ghost-button" id="jump-notes" type="button">Erkenntnis notieren →</button>
+            </div>
+          </aside>
+        </div>
+
+        <div class="panel" style="margin-top: 20px;">
+          <h3>Eigene Karte hinzufügen</h3>
+          <p class="microcopy">Formuliere eine Frage und eine kurze Antwort aus deinem Arbeitsalltag. Sie wird lokal auf diesem Gerät gespeichert.</p>
+          <form id="card-form" class="form-grid">
+            <div class="field"><label for="new-card-question">Frage</label><input id="new-card-question" name="question" type="text" required placeholder="Was bedeutet …?" /></div>
+            <div class="field"><label for="new-card-answer">Antwort</label><input id="new-card-answer" name="answer" type="text" required placeholder="Kurz und verständlich …" /></div>
+            <div class="field full"><div class="form-actions"><button class="primary-button" type="submit">+ Karte speichern</button><button class="ghost-button" id="reset-card-progress" type="button">Lernstand zurücksetzen</button></div></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="section" id="section-calculator" role="tabpanel" aria-labelledby="tab-calculator" hidden>
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Sektion B</p>
+            <h2>BWL-ROI & Token-Kosten</h2>
+          </div>
+          <p>Spiele mit den Annahmen. Das Modell ist bewusst transparent: Du kannst Nutzungsvolumen, Preise und einmalige Einführungskosten selbst setzen.</p>
+        </div>
+
+        <div class="calculator-layout">
+          <div class="panel calculator-panel">
+            <div>
+              <label>Welches Modell setzt du für deine Automatisierung ein?</label>
+              <div class="model-toggle" role="group" aria-label="Modellklasse">
+                <button type="button" data-model="frontier" aria-pressed="true">Frontier-Modell</button>
+                <button type="button" data-model="mini" aria-pressed="false">Mini / lokal</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="range-row"><label for="monthly-requests">Anfragen pro Monat</label><span class="range-value" id="monthly-requests-value">5.000</span></div>
+              <input id="monthly-requests" type="range" min="100" max="100000" step="100" value="5000" />
+            </div>
+            <div class="field">
+              <div class="range-row"><label for="input-tokens">Eingabe-Tokens pro Anfrage</label><span class="range-value" id="input-tokens-value">1.200</span></div>
+              <input id="input-tokens" type="range" min="100" max="10000" step="100" value="1200" />
+            </div>
+            <div class="field">
+              <div class="range-row"><label for="output-tokens">Ausgabe-Tokens pro Anfrage</label><span class="range-value" id="output-tokens-value">500</span></div>
+              <input id="output-tokens" type="range" min="50" max="5000" step="50" value="500" />
+            </div>
+            <div class="form-grid">
+              <div class="field"><label for="frontier-input-rate">Frontier: $ / 1 Mio. Input-Tokens</label><input id="frontier-input-rate" type="number" min="0" step="0.01" value="5" /></div>
+              <div class="field"><label for="frontier-output-rate">Frontier: $ / 1 Mio. Output-Tokens</label><input id="frontier-output-rate" type="number" min="0" step="0.01" value="15" /></div>
+              <div class="field"><label for="mini-input-rate">Mini/lokal: $ / 1 Mio. Input-Tokens</label><input id="mini-input-rate" type="number" min="0" step="0.01" value="0.30" /></div>
+              <div class="field"><label for="mini-output-rate">Mini/lokal: $ / 1 Mio. Output-Tokens</label><input id="mini-output-rate" type="number" min="0" step="0.01" value="1.20" /></div>
+              <div class="field full"><div class="range-row"><label for="setup-cost">Einmalige Einführungskosten</label><span class="range-value" id="setup-cost-value">2.500 €</span></div><input id="setup-cost" type="range" min="0" max="50000" step="250" value="2500" /></div>
+            </div>
+            <p class="microcopy">Hinweis: Beispielpreise zur Planung, keine aktuellen Anbieterpreise. Für eine belastbare Entscheidung ersetze sie durch deine Vertrags- oder Infrastrukturwerte.</p>
+          </div>
+
+          <aside class="result-card" aria-live="polite">
+            <div>
+              <p class="eyebrow">Monatlicher Vergleich</p>
+              <h3 id="result-title">Potenzielle Ersparnis</h3>
+              <div class="big-result" id="monthly-saving">0 €</div>
+              <p class="result-note" id="result-note">gegenüber dem Frontier-Modell</p>
+            </div>
+            <div class="result-breakdown">
+              <div class="breakdown-row"><span>Frontier-Kosten</span><strong id="frontier-cost">0 €</strong></div>
+              <div class="breakdown-row"><span>Mini-/lokale Kosten</span><strong id="mini-cost">0 €</strong></div>
+              <div class="breakdown-row"><span>Amortisation der Einführung</span><strong id="payback-period">—</strong></div>
+              <div class="hint-box" id="calculator-insight">Passe die Regler an, um dein Szenario zu sehen.</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="section-notes" role="tabpanel" aria-labelledby="tab-notes" hidden>
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Sektion C</p>
+            <h2>Lernstand & eigene Notizen</h2>
+          </div>
+          <p>Alles bleibt in deinem Browser. Exportiere jederzeit eine JSON-Sicherung oder importiere sie auf einem anderen Gerät.</p>
+        </div>
+
+        <div class="notes-layout">
+          <div class="panel">
+            <h3>Notizbuch</h3>
+            <textarea id="notes" placeholder="Welche Idee möchtest du ausprobieren? Was ist die wichtigste Erkenntnis aus der letzten Karte?"></textarea>
+            <div class="notes-meta"><span id="notes-status">Noch nicht gespeichert</span><span>lokal auf diesem Gerät</span></div>
+            <div class="notes-toolbar"><button class="primary-button" id="save-notes" type="button">Notizen speichern</button><button class="ghost-button" id="clear-notes" type="button">Leeren</button></div>
+          </div>
+          <div class="panel">
+            <h3>Daten verwalten</h3>
+            <p class="microcopy">Export enthält Lernstand, eigene Karten, Notizen und Rechnerwerte. So kannst du deine Werkstatt sichern oder umziehen.</p>
+            <div class="notes-toolbar"><button class="primary-button" id="export-data" type="button">↓ JSON exportieren</button><label class="ghost-button" for="import-data" style="display:grid; place-items:center; cursor:pointer;">↑ JSON importieren</label><input class="sr-only" id="import-data" type="file" accept="application/json,.json" /></div>
+            <div class="dropzone" id="dropzone" style="margin-top: 18px;"><div><strong>Datei hier ablegen</strong><p>oder über „JSON importieren“ auswählen</p></div></div>
+            <div class="user-card-list" id="user-card-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer"><span>KI-Lernwerkstatt · lokal & offline-first</span><span id="storage-indicator">Lokaler Speicher bereit</span></footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const STORAGE_KEY = "ki-lernwerkstatt-state-v1";
+        const todayKey = () => new Date().toISOString().slice(0, 10);
+        const defaultCards = [
+          { id: "llm", category: "Grundlagen", question: "Was ist ein LLM?", answer: "Ein Large Language Model ist ein Sprachmodell, das aus großen Textmengen statistische Muster lernt und daraus die wahrscheinlich passende nächste Token-Folge erzeugt." },
+          { id: "harness", category: "Praxis", question: "Was bedeutet AI Harness?", answer: "Ein Harness ist die umgebende Arbeitsumgebung für ein KI-Modell: Regeln, Tools, Kontext, Speicher, Tests und Kontrollpunkte, die aus dem Modell eine verlässliche Anwendung machen." },
+          { id: "rag", category: "Architektur", question: "Was ist RAG?", answer: "Retrieval-Augmented Generation ergänzt die Antwort eines Modells um passende, vorher abgerufene Quellen. Das reduziert Halluzinationen und hält Wissen außerhalb des Modelltrainings aktuell." },
+          { id: "memory", category: "Architektur", question: "Wozu dient Memory in einer KI-Anwendung?", answer: "Memory speichert relevante Informationen über Interaktionen hinweg. Gutes Memory trennt kurzlebigen Kontext von bewusst ausgewählten, dauerhaften Fakten und braucht klare Lösch- und Datenschutzregeln." },
+          { id: "injection", category: "Risiko", question: "Was ist Prompt Injection?", answer: "Prompt Injection ist der Versuch, ein Modell durch manipulierte Anweisungen im Prompt oder in gelesenen Inhalten von seinem eigentlichen Auftrag abzubringen. Eingaben müssen daher als Daten behandelt und Ausgaben kontrolliert werden." },
+          { id: "tokens", category: "Ökonomie", question: "Warum sind Tokens betriebswirtschaftlich relevant?", answer: "Tokens sind die Abrechnungseinheit vieler Modelle. Kürzerer Kontext, Caching, passende Modellwahl und strukturierte Prompts können Kosten, Latenz und Ressourcenverbrauch direkt senken." },
+          { id: "eu-ai-act", category: "Governance", question: "Was ist der EU AI Act in einem Satz?", answer: "Der EU AI Act ist ein risikobasierter Rechtsrahmen für KI-Systeme, der je nach Anwendung Pflichten wie Transparenz, Risikomanagement, Dokumentation und menschliche Aufsicht vorsieht." },
+          { id: "agents", category: "Praxis", question: "Wann ist ein Agent sinnvoller als ein einzelner Prompt?", answer: "Wenn eine Aufgabe mehrere Schritte, Werkzeuge oder Prüfungen braucht. Der zusätzliche Handlungsspielraum erhöht aber auch Komplexität, Kosten und die Anforderungen an Grenzen und Tests." },
+          { id: "evals", category: "Qualität", question: "Was ist ein gutes KI-Eval?", answer: "Ein Eval ist ein wiederholbarer Test mit klaren Beispielen und Kriterien. Es misst nicht nur, ob eine Antwort plausibel klingt, sondern ob sie für den konkreten Geschäftsfall korrekt und sicher ist." },
+          { id: "context", category: "Grundlagen", question: "Was ist ein Kontextfenster?", answer: "Das Kontextfenster ist die maximale Menge an Tokens, die ein Modell in einer Anfrage berücksichtigen kann. Es umfasst typischerweise Systemregeln, Gespräch, Dokumente und gewünschte Ausgabe." }
+        ];
+
+        const defaultState = {
+          theme: "light",
+          cards: [],
+          known: {},
+          seenDates: [],
+          notes: "",
+          lastSaved: null,
+          calculator: {
+            model: "frontier",
+            monthlyRequests: 5000,
+            inputTokens: 1200,
+            outputTokens: 500,
+            frontierInputRate: 5,
+            frontierOutputRate: 15,
+            miniInputRate: 0.3,
+            miniOutputRate: 1.2,
+            setupCost: 2500
+          }
+        };
+
+        let state = loadState();
+        let cards = [...defaultCards, ...state.cards];
+        let currentCardIndex = 0;
+        let cardFlipped = false;
+        let toastTimer;
+
+        const $ = (selector) => document.querySelector(selector);
+        const $$ = (selector) => [...document.querySelectorAll(selector)];
+        const formatNumber = (value) => new Intl.NumberFormat("de-DE").format(Math.round(value));
+        const formatCurrency = (value) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
+        const formatUsd = (value) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(value);
+
+        function loadState() {
+          try {
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+            return {
+              ...defaultState,
+              ...stored,
+              cards: Array.isArray(stored?.cards) ? stored.cards : [],
+              known: stored?.known && typeof stored.known === "object" ? stored.known : {},
+              seenDates: Array.isArray(stored?.seenDates) ? stored.seenDates : [],
+              calculator: { ...defaultState.calculator, ...(stored?.calculator || {}) }
+            };
+          } catch (error) {
+            return JSON.parse(JSON.stringify(defaultState));
+          }
+        }
+
+        function saveState() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            $("#storage-indicator").textContent = "Automatisch lokal gespeichert";
+          } catch (error) {
+            $("#storage-indicator").textContent = "Lokaler Speicher nicht verfügbar";
+            showToast("Speichern war in diesem Browser nicht möglich.");
+          }
+        }
+
+        function showToast(message) {
+          const toast = $("#toast");
+          toast.textContent = message;
+          toast.classList.add("is-visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
+        }
+
+        function applyTheme() {
+          document.documentElement.dataset.theme = state.theme;
+          const button = $("#theme-toggle");
+          button.textContent = state.theme === "dark" ? "☀" : "☾";
+          button.setAttribute("aria-label", state.theme === "dark" ? "Hellmodus aktivieren" : "Dark-Mode aktivieren");
+        }
+
+        function markSeenToday() {
+          if (!state.seenDates.includes(todayKey())) state.seenDates.push(todayKey());
+          saveState();
+        }
+
+        function renderCard() {
+          const card = cards[currentCardIndex];
+          if (!card) return;
+          $("#card-side-label").textContent = cardFlipped ? "Antwort" : card.category;
+          $("#card-number").textContent = String(currentCardIndex + 1).padStart(2, "0");
+          $("#card-title").textContent = cardFlipped ? "Kurz erklärt" : card.question;
+          $("#card-body").textContent = cardFlipped ? card.answer : "Tippe auf die Karte, um deine Antwort zu prüfen.";
+          $("#card-status").textContent = `Karte ${currentCardIndex + 1} von ${cards.length}`;
+          $("#trainer-progress").style.width = `${((currentCardIndex + 1) / cards.length) * 100}%`;
+          $("#previous-card").disabled = currentCardIndex === 0;
+          $("#next-card").disabled = currentCardIndex === cards.length - 1;
+          $("#flashcard").classList.toggle("is-flipped", cardFlipped);
+        }
+
+        function renderStats() {
+          const knownCount = Object.values(state.known).filter(Boolean).length;
+          $("#known-count").textContent = `${knownCount}/${cards.length}`;
+          $("#streak-count").textContent = state.seenDates.length;
+          $("#custom-card-count").textContent = state.cards.length;
+          $("#hero-progress").textContent = `${Math.round((knownCount / cards.length) * 100)} % im Lernfluss`;
+          renderUserCards();
+        }
+
+        function toggleCard() {
+          cardFlipped = !cardFlipped;
+          markSeenToday();
+          renderCard();
+          renderStats();
+        }
+
+        function goToCard(nextIndex) {
+          currentCardIndex = Math.max(0, Math.min(cards.length - 1, nextIndex));
+          cardFlipped = false;
+          renderCard();
+        }
+
+        function setupTrainer() {
+          $("#flashcard").addEventListener("click", toggleCard);
+          $("#flashcard").addEventListener("keydown", (event) => {
+            if (event.key === " " || event.key === "Enter") { event.preventDefault(); toggleCard(); }
+          });
+          $("#previous-card").addEventListener("click", () => goToCard(currentCardIndex - 1));
+          $("#next-card").addEventListener("click", () => goToCard(currentCardIndex + 1));
+          $("#know-card").addEventListener("click", () => {
+            const card = cards[currentCardIndex];
+            state.known[card.id] = true;
+            saveState();
+            renderStats();
+            showToast("Karte als sicher markiert.");
+            if (currentCardIndex < cards.length - 1) goToCard(currentCardIndex + 1);
+          });
+          $("#card-form").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const question = String(formData.get("question") || "").trim();
+            const answer = String(formData.get("answer") || "").trim();
+            if (!question || !answer) return;
+            const newCard = { id: `custom-${Date.now()}`, category: "Eigene Karte", question, answer };
+            state.cards.push(newCard);
+            cards.push(newCard);
+            saveState();
+            event.currentTarget.reset();
+            renderStats();
+            goToCard(cards.length - 1);
+            showToast("Eigene Karte gespeichert.");
+          });
+          $("#reset-card-progress").addEventListener("click", () => {
+            if (!confirm("Möchtest du den Karten-Lernstand wirklich zurücksetzen? Eigene Karten bleiben erhalten.")) return;
+            state.known = {};
+            saveState();
+            renderStats();
+            showToast("Lernstand zurückgesetzt.");
+          });
+          $("#jump-notes").addEventListener("click", () => activateSection("notes"));
+        }
+
+        function renderUserCards() {
+          const list = $("#user-card-list");
+          list.innerHTML = "";
+          if (!state.cards.length) return;
+          const heading = document.createElement("p");
+          heading.className = "microcopy";
+          heading.textContent = "Deine eigenen Karten";
+          list.appendChild(heading);
+          state.cards.forEach((card) => {
+            const item = document.createElement("div");
+            item.className = "user-card-item";
+            item.innerHTML = `<div><strong></strong><p></p></div><button class="delete-card" type="button" aria-label="Karte löschen">Löschen</button>`;
+            item.querySelector("strong").textContent = card.question;
+            item.querySelector("p").textContent = card.answer;
+            item.querySelector("button").addEventListener("click", () => {
+              state.cards = state.cards.filter((candidate) => candidate.id !== card.id);
+              cards = [...defaultCards, ...state.cards];
+              delete state.known[card.id];
+              currentCardIndex = Math.min(currentCardIndex, cards.length - 1);
+              saveState();
+              renderCard();
+              renderStats();
+              showToast("Eigene Karte gelöscht.");
+            });
+            list.appendChild(item);
+          });
+        }
+
+        function updateCalculator() {
+          const calc = state.calculator;
+          const monthlyTokensInMillions = (calc.monthlyRequests * calc.inputTokens) / 1000000;
+          const monthlyTokensOutMillions = (calc.monthlyRequests * calc.outputTokens) / 1000000;
+          const frontierCostUsd = monthlyTokensInMillions * calc.frontierInputRate + monthlyTokensOutMillions * calc.frontierOutputRate;
+          const miniCostUsd = monthlyTokensInMillions * calc.miniInputRate + monthlyTokensOutMillions * calc.miniOutputRate;
+          const usdToEur = 0.92;
+          const frontierCost = frontierCostUsd * usdToEur;
+          const miniCost = miniCostUsd * usdToEur;
+          const saving = Math.max(0, frontierCost - miniCost);
+          const payback = saving > 0 ? calc.setupCost / saving : Infinity;
+          $("#monthly-saving").textContent = formatCurrency(saving);
+          $("#frontier-cost").textContent = `${formatCurrency(frontierCost)} / Monat`;
+          $("#mini-cost").textContent = `${formatCurrency(miniCost)} / Monat`;
+          $("#payback-period").textContent = Number.isFinite(payback) ? `${payback < 1 ? "unter 1" : payback.toFixed(1).replace(".", ",")} Monate` : "nicht erreicht";
+          $("#result-note").textContent = calc.model === "frontier" ? "bei Wechsel auf Mini / lokal" : "gegenüber dem Frontier-Modell";
+          $("#calculator-insight").textContent = saving > 0 ? `Bei ${formatNumber(calc.monthlyRequests)} Anfragen liegt dein Szenario bei rund ${formatCurrency(saving * 12)} Ersparnis pro Jahr. Die Rechnung nutzt einen Planungswechselkurs von 1 USD = 0,92 EUR.` : "Mit diesen Annahmen entsteht noch keine monatliche Ersparnis. Prüfe Modellpreise, Volumen oder Einführungskosten.";
+          $("#monthly-requests-value").textContent = formatNumber(calc.monthlyRequests);
+          $("#input-tokens-value").textContent = formatNumber(calc.inputTokens);
+          $("#output-tokens-value").textContent = formatNumber(calc.outputTokens);
+          $("#setup-cost-value").textContent = formatCurrency(calc.setupCost);
+          $("#monthly-requests").value = calc.monthlyRequests;
+          $("#input-tokens").value = calc.inputTokens;
+          $("#output-tokens").value = calc.outputTokens;
+          $("#setup-cost").value = calc.setupCost;
+          $("#frontier-input-rate").value = calc.frontierInputRate;
+          $("#frontier-output-rate").value = calc.frontierOutputRate;
+          $("#mini-input-rate").value = calc.miniInputRate;
+          $("#mini-output-rate").value = calc.miniOutputRate;
+          $$('[data-model]').forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.model === calc.model)));
+        }
+
+        function setupCalculator() {
+          const rangeBindings = { "monthly-requests": "monthlyRequests", "input-tokens": "inputTokens", "output-tokens": "outputTokens", "setup-cost": "setupCost" };
+          Object.entries(rangeBindings).forEach(([id, key]) => $("#" + id).addEventListener("input", (event) => { state.calculator[key] = Number(event.target.value); updateCalculator(); saveState(); }));
+          const numberBindings = { "frontier-input-rate": "frontierInputRate", "frontier-output-rate": "frontierOutputRate", "mini-input-rate": "miniInputRate", "mini-output-rate": "miniOutputRate" };
+          Object.entries(numberBindings).forEach(([id, key]) => $("#" + id).addEventListener("input", (event) => { state.calculator[key] = Math.max(0, Number(event.target.value) || 0); updateCalculator(); saveState(); }));
+          $$('[data-model]').forEach((button) => button.addEventListener("click", () => { state.calculator.model = button.dataset.model; updateCalculator(); saveState(); }));
+          updateCalculator();
+        }
+
+        function setupNotes() {
+          $("#notes").value = state.notes;
+          $("#notes").addEventListener("input", () => { $("#notes-status").textContent = "Ungespeicherte Änderungen"; });
+          $("#save-notes").addEventListener("click", () => { state.notes = $("#notes").value; state.lastSaved = new Date().toISOString(); saveState(); $("#notes-status").textContent = `Gespeichert um ${new Intl.DateTimeFormat("de-DE", { hour: "2-digit", minute: "2-digit" }).format(new Date(state.lastSaved))}`; showToast("Notizen lokal gespeichert."); });
+          $("#clear-notes").addEventListener("click", () => { $("#notes").value = ""; state.notes = ""; state.lastSaved = new Date().toISOString(); saveState(); $("#notes-status").textContent = "Notizbuch geleert"; });
+          $("#export-data").addEventListener("click", exportData);
+          $("#import-data").addEventListener("change", (event) => { const file = event.target.files?.[0]; if (file) importData(file); event.target.value = ""; });
+          const dropzone = $("#dropzone");
+          ["dragenter", "dragover"].forEach((eventName) => dropzone.addEventListener(eventName, (event) => { event.preventDefault(); dropzone.style.background = "var(--gold)"; }));
+          ["dragleave", "drop"].forEach((eventName) => dropzone.addEventListener(eventName, (event) => { event.preventDefault(); dropzone.style.background = ""; }));
+          dropzone.addEventListener("drop", (event) => { const file = event.dataTransfer.files?.[0]; if (file) importData(file); });
+        }
+
+        function exportData() {
+          state.notes = $("#notes").value;
+          saveState();
+          const payload = { app: "KI-Lernwerkstatt", version: 1, exportedAt: new Date().toISOString(), data: state };
+          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `ki-lernwerkstatt-${todayKey()}.json`;
+          link.click();
+          URL.revokeObjectURL(url);
+          showToast("JSON-Sicherung exportiert.");
+        }
+
+        function importData(file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const parsed = JSON.parse(reader.result);
+              const imported = parsed?.data || parsed;
+              if (!imported || typeof imported !== "object") throw new Error("Ungültige Datei");
+              state = { ...defaultState, ...imported, cards: Array.isArray(imported.cards) ? imported.cards : [], known: imported.known || {}, seenDates: Array.isArray(imported.seenDates) ? imported.seenDates : [], calculator: { ...defaultState.calculator, ...(imported.calculator || {}) } };
+              cards = [...defaultCards, ...state.cards];
+              currentCardIndex = 0;
+              $("#notes").value = state.notes || "";
+              applyTheme();
+              renderCard();
+              renderStats();
+              updateCalculator();
+              saveState();
+              showToast("Daten erfolgreich importiert.");
+            } catch (error) { showToast("Diese JSON-Datei konnte nicht importiert werden."); }
+          };
+          reader.readAsText(file);
+        }
+
+        function activateSection(sectionName) {
+          $$(".nav-tab").forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.section === sectionName)));
+          $$(".section").forEach((section) => { const active = section.id === `section-${sectionName}`; section.classList.toggle("is-active", active); section.hidden = !active; });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function setupNavigation() {
+          $$(".nav-tab").forEach((tab) => tab.addEventListener("click", () => activateSection(tab.dataset.section)));
+          $("#theme-toggle").addEventListener("click", () => { state.theme = state.theme === "dark" ? "light" : "dark"; applyTheme(); saveState(); });
+          document.addEventListener("keydown", (event) => { if (event.key === "ArrowRight" && document.activeElement?.id === "flashcard") goToCard(currentCardIndex + 1); if (event.key === "ArrowLeft" && document.activeElement?.id === "flashcard") goToCard(currentCardIndex - 1); });
+        }
+
+        applyTheme();
+        setupNavigation();
+        setupTrainer();
+        setupCalculator();
+        setupNotes();
+        renderCard();
+        renderStats();
+        if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => { $("#storage-indicator").textContent = "Offline-Cache wird vorbereitet"; });
+      })();
+    </script>
+  </body>
+</html>
