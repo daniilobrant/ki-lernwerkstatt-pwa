@@ -1,6 +1,16 @@
 # KI-Lernwerkstatt
 
-Offline-first Progressive Web App für BWL, KI und Token-Ökonomie.
+Eine kleine Lernwerkstatt für alle, die sich mit KI und betriebswirtschaftlichen Fragen beschäftigen möchten. Die Progressive Web App läuft direkt im Browser und kann auf dem Smartphone oder Computer installiert werden.
+
+**[KI-Lernwerkstatt öffnen](https://daniilobrant-oss.github.io/ki-lernwerkstatt-pwa/)**
+
+## Was bietet die App?
+
+- **Karteikarten:** Zehn vorbefüllte Karten erklären unter anderem LLMs, RAG, Prompt Injection und den EU AI Act. Eigene Fragen und Antworten lassen sich ergänzen.
+- **ROI- und Token-Rechner:** Mit eigenen Annahmen zu Nutzung, Modellpreisen und Einführungskosten lassen sich Frontier- und Mini- beziehungsweise lokale Modelle vergleichen. Die angezeigten Preise und der Wechselkurs sind Planungsannahmen.
+- **Lernstand und Notizen:** Fortschritt, eigene Karten und Notizen werden lokal gespeichert. Eine JSON-Datei ermöglicht Sicherung und Übertragung auf ein anderes Gerät.
+
+Nach dem ersten Laden stehen die zwischengespeicherten App-Dateien auch offline zur Verfügung. Es gibt keine externen Bibliotheken oder Tracker.
 
 ## Lokal testen
 
@@ -12,9 +22,7 @@ Danach `http://127.0.0.1:4173/` öffnen. Für Service Worker und Installation mu
 
 ## GitHub Pages
 
-Den Inhalt dieses Ordners in ein Repository `ki-lernwerkstatt-pwa` pushen und GitHub Pages aus dem gewünschten Branch bzw. `/root` veröffentlichen. Alle App-Pfade sind relativ und funktionieren dadurch auch unter:
-
-`https://<username>.github.io/ki-lernwerkstatt-pwa/`
+Die App wird aus dem Branch `main` über GitHub Pages veröffentlicht: [Zur Live-App](https://daniilobrant-oss.github.io/ki-lernwerkstatt-pwa/). Die relativen Pfade ermöglichen den Betrieb im Repository-Unterordner.
 
 ## Daten
 
